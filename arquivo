@@ -1,0 +1,116 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+#include<string.h>
+
+typedef struct curso
+{
+	char Nome[40];
+	char Sigla[5];
+    int Periodo;
+    
+};
+
+typedef struct aluno
+{
+	char Nome[40];
+	curso Curso;
+	aluno *ant;
+	aluno *prox;
+};
+
+
+
+void incluir (aluno **topo) {
+	
+	aluno *novo;
+	novo = (aluno*) malloc(sizeof(aluno));
+	
+	system("cls");
+	printf("\n [ *** Cadastro *** ] \n\n");
+	printf("Digite o nome aluno: ");
+	fflush(stdin);
+	gets(novo->Nome);
+	printf("Digite o nome curso: ");
+	fflush(stdin);
+	gets(novo->Curso.Nome);
+	printf("Digite o Sigla: ");
+	fflush(stdin);
+	gets(novo->Curso.Sigla);
+	printf("Digite a Periodos: ");
+	scanf("%d",&novo->Curso.Periodo);
+	
+	
+	if(*topo == NULL) {
+		novo->prox = NULL;
+		*topo = novo;
+		
+	}else{
+		
+		novo->prox = *topo;
+		*topo = novo;
+	}
+	
+}
+
+
+void pesquisar(aluno *topo) {
+	aluno *aux;
+	aux = topo;
+	
+	char nomeal[51];
+	
+	if(aux == NULL) {
+		printf("\nNão existe aluno cadastrado!");
+	}else{
+	printf("\nDigite o nome do aluno: ");
+		fflush(stdin);
+        scanf("%s",&nomeal); 
+		do{
+			if(strcmp(nomeal,aux->Nome) == 0) {
+					printf("\nNome: %s",aux->Nome);
+					printf("\nCurso: %s",aux->Curso.Nome);
+					printf("\nSigla: %s",aux->Curso.Sigla);
+					printf("\nPeriodo: %d",aux->Curso.Periodo);
+					getch();
+						
+			}
+			aux = aux->prox;
+		}while(aux!= NULL);
+	}
+	
+}
+
+
+int main( ){
+	int op;
+	aluno *topo = NULL;
+	
+		do{
+		system("cls");
+		printf("\n *** MENU ***");
+		printf("\n---------------------\n\n");
+		printf("1-Incluir");
+		printf("\n2-Pesquisar");
+		printf("\n3-Sair");
+		printf("\nDigite a opcao: ");
+		fflush(stdin);
+		scanf("%d", &op);
+		
+		if(op == 1) {
+			incluir(&topo);
+		}
+		
+		if(op == 2) {
+				
+			pesquisar(topo);
+		}
+		
+		if(op == 3){
+			
+			free(topo);
+		}
+		
+	}while(op!=3);
+
+}
